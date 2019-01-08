@@ -1,0 +1,165 @@
+net
+{
+    node_size = (80 40);
+    HR_realname_AML = "AML";
+    HR_realname_MDS1 = "MDS1";
+    HR_realname_MDK = "MDK";
+    HR_realname_PCCB = "PCCB";
+    HR_realname_ATP2B4 = "ATP2B4";
+    HR_realname_NAP1L1 = "NAP1L1";
+    HR_Has_Constraints = "yes";
+    HR_DBN_Num_Slices = "5";
+    HR_Desc = "";
+    HR_OOBN_CheckConsistency = "1";
+    HR_OOBN_FitExpand = "1";
+    HR_Zoom_ZoomFactor = "100";
+    HR_Groups_GroupColors = "";
+    HR_Groups_GroupNames = "";
+    HR_Groups_UserGroupsNo = "0";
+    HR_Utility_Link = "63";
+    HR_Probabilistic_Link = "63";
+    HR_Functional_Link = "63";
+    HR_Binding_Link = "63";
+    HR_Information_Arc = "63";
+    HR_Color_Interface = "21";
+    HR_Color_Instance = "0";
+    HR_Color_DiscreteFunction = "5";
+    HR_Color_Function = "4";
+    HR_Color_Utility = "36";
+    HR_Color_Decision = "17";
+    HR_Color_ContinuousChance = "48";
+    HR_Color_DiscreteChance = "16";
+    HR_Monitor_InitSD = "2";
+    HR_Monitor_Utility_Arrange = "0";
+    HR_Monitor_Mean_Variance = "1";
+    HR_Monitor_Chance_Utility = "1";
+    HR_Monitor_InitStates = "5";
+    HR_Monitor_OpenGraph = "0";
+    HR_Monitor_GraphPrecision = "100";
+    HR_Monitor_AutoUpdGraph = "0";
+    HR_Compile_MaxMinimalSeparators = "100000";
+    HR_Compile_ApproxEpsilon = "1.0E-5";
+    HR_Compile_Approximate = "0";
+    HR_Compile_SaveToMemory = "0";
+    HR_Compile_Compress = "0";
+    HR_Compile_TriangMethod = "0";
+    HR_Propagate_AutoNormal = "1";
+    HR_Propagate_AutoSum = "1";
+    HR_Propagate_Auto = "1";
+    HR_Font_Italic = "0";
+    HR_Font_Weight = "400";
+    HR_Font_Size = "-12";
+    HR_Font_Name = "javax.swing.plaf.FontUIResource[family=Tahoma,name=Tahoma,style=plain,size=11]";
+    HR_Grid_GridShow = "0";
+    HR_Grid_GridSnap = "0";
+    HR_Grid_Y = "40";
+    HR_Grid_X = "40";
+}
+
+node NAP1L1
+{
+    position = (50 247);
+    states = ("no" "yes");
+    HR_LinkGroup = "[MDS1:0][ATP2B4:0][PCCB:0][MDK:0][AML:0]";
+    HR_LinkMode = "[MDS1:0][ATP2B4:0][PCCB:0][MDK:0][AML:0]";
+}
+
+node ATP2B4
+{
+    position = (236 248);
+    states = ("no" "yes");
+    HR_LinkGroup = "[PCCB:0][MDK:0][MDS1:0][AML:0]";
+    HR_LinkMode = "[PCCB:0][MDK:0][MDS1:0][AML:0]";
+}
+
+node PCCB
+{
+    position = (139 171);
+    states = ("yes" "no");
+    HR_LinkGroup = "[MDS1:0][MDK:0][AML:0]";
+    HR_LinkMode = "[MDS1:0][MDK:0][AML:0]";
+}
+
+node MDK
+{
+    position = (267 106);
+    states = ("no" "yes");
+    HR_LinkGroup = "[PCCB:0][AML:0][MDS1:0]";
+    HR_LinkMode = "[PCCB:0][AML:0][MDS1:0]";
+}
+
+node MDS1
+{
+    position = (50 111);
+    states = ("yes" "no");
+    HR_LinkGroup = "[AML:0]";
+    HR_LinkMode = "[AML:0]";
+}
+
+node AML
+{
+    position = (148 29);
+    states = ("yes" "no");
+    HR_LinkGroup = "[ATP2B4:0][NAP1L1:0]";
+    HR_LinkMode = "[ATP2B4:0][NAP1L1:0]";
+}
+
+potential (NAP1L1 | AML)
+{
+    data
+     = (( 1 0 )	%  AML=yes
+	( 0.694444 0.305556 ));	%  AML=no
+    experience
+     = ( 21	%  AML=yes
+	 36 );	%  AML=no
+}
+
+potential (ATP2B4 | AML)
+{
+    data
+     = (( 0.952381 0.047619 )	%  AML=yes
+	( 0.694444 0.305556 ));	%  AML=no
+    experience
+     = ( 21	%  AML=yes
+	 36 );	%  AML=no
+}
+
+potential (PCCB | MDK)
+{
+    data
+     = (( 0.893617 0.106383 )	%  MDK=no
+	( 0.5 0.5 ));	%  MDK=yes
+    experience
+     = ( 47	%  MDK=no
+	 10 );	%  MDK=yes
+}
+
+potential (MDK)
+{
+    data = ( 0.824561 0.175439 );
+    experience = 57;
+}
+
+potential (MDS1 | NAP1L1 PCCB)
+{
+    data
+     = ((( 0.973684 0.0263158 )	%  NAP1L1=no  PCCB=yes
+	 ( 0.5 0.5 ))	%  NAP1L1=no  PCCB=no
+	(( 0.444444 0.555556 )	%  NAP1L1=yes  PCCB=yes
+	 ( 1 0 )));	%  NAP1L1=yes  PCCB=no
+    experience
+     = (( 38	%  NAP1L1=no  PCCB=yes
+	  8 )	%  NAP1L1=no  PCCB=no
+	( 9	%  NAP1L1=yes  PCCB=yes
+	  2 ));	%  NAP1L1=yes  PCCB=no
+}
+
+potential (AML | MDK)
+{
+    data
+     = (( 0.446809 0.553191 )	%  MDK=no
+	( 0 1 ));	%  MDK=yes
+    experience
+     = ( 47	%  MDK=no
+	 10 );	%  MDK=yes
+}
